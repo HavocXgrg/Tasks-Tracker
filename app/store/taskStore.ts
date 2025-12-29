@@ -18,7 +18,7 @@ interface TaskStoreProps {
     setSearch: (search: string) => void;
 }
 
-const useTaskStore = create<TaskStoreProps>((set) => ({
+export const useTaskStore = create<TaskStoreProps>((set) => ({
     tasks: [],
     filter: 'All',
     sort: null,
