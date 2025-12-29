@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { Task, FilterType, SortType } from "../utils/type";
 import { addTask, deleteTask, fetchTasks, updateTask } from "../utils/mockApi";
+import { toast } from "react-toastify";
 
 interface TaskStoreProps {
     tasks: Task[];
@@ -39,8 +40,10 @@ export const useTaskStore = create<TaskStoreProps>((set) => ({
         try {
             const addedTask = addTask(title, dueDate);
             set((state) => ({ tasks: [...state.tasks, addedTask] }))
+            toast.success("Task created successfully!");
         } catch (error) {
             set({ error: 'Failed to add task' });
+            toast.error("Error adding task");
         }
     },
     editTask: (editedTask) => {
@@ -49,8 +52,10 @@ export const useTaskStore = create<TaskStoreProps>((set) => ({
             set((state) => ({
                 tasks: state.tasks.map((taskItem) => taskItem.id === editedTask.id ? editedTask : taskItem)
             }))
+            toast.info("Task updated");
         } catch (error) {
             set({ error: 'Update failed' });
+            toast.error("Could not update task");
         }
     },
     removeTask: (id) => {
@@ -59,8 +64,10 @@ export const useTaskStore = create<TaskStoreProps>((set) => ({
             set((state) => ({
                 tasks: state.tasks.filter((taskItem) => taskItem.id !== id)
             }))
+            toast.warn("Task deleted");
         } catch (error) {
             set({ error: 'Delete failed' });
+            toast.error("Error deleting task");
         }
     },
     setFilter: (filter) => set({ filter }),
